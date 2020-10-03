@@ -89,8 +89,29 @@ app.post('/signup',function(req,res){
 })
 
 app.get('/match/:user',function(req,res){
-	console.log(req.params);
-	res.send('hello '+req.params.user)
+	// console.log(req.params);
+	// res.send('hello '+req.params.user)
+
+	let user;
+	let match=[];
+	let result=[];
+	User.find({username:user},function(err,user){
+		console.log(user.genre);
+		// List of all the genre prefered by the user
+
+	})
+	if(user.gender=='Male'){
+		User.find({gender:'Female'},function(err,match){
+			console.log(match);
+			// List of all females for our user
+		})
+	}
+	else{
+		User.find({gender:'Male'},function(err,match){
+			console.log(match);
+			// List of all males for our user
+		})
+	}
 
 })
 
