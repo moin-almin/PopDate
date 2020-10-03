@@ -134,27 +134,35 @@ app.get('/match/:user',function(req,res){
 
 	let person=req.params.user;
 	
-	let match=['Anushka'];
+	let match;
 	let result=[];
-	// User.find({username:user},function(err,user){
-	// 	console.log(user.genre);
-	// 	// List of all the genre prefered by the user
+	User.find({username:person},function(err,user){
+		
+		// List of all the genre prefered by the user
 
-	// })
-	// if(user.gender=='Male'){
-	// 	User.find({gender:'Female'},function(err,match){
-	// 		console.log(match);
-	// 		// List of all females for our user
-	// 	})
-	// }
-	// else{
-	// 	User.find({gender:'Male'},function(err,match){
-	// 		console.log(match);
-	// 		// List of all males for our user
-	// 	})
-	// }
-	res.render("dashboard",{matches:match,user:person})
-
+	
+	if(user[0].gender=='Male'){
+		User.find({gender:'Female'},function(err,match){
+			console.log(match);
+			// List of all females for our user
+			// result.push(match)
+			// console.log(result)
+			result=match[0];
+			res.render("dashboard",{matches:result,user:person})
+		})
+	}
+	else{
+		User.find({gender:'Male'},function(err,match){
+			console.log(match);
+			// List of all males for our user
+			result=match[0];
+			res.render("dashboard",{matches:result,user:person})
+			
+			
+		})
+	}
+	// res.render("dashboard",{matches:result,user:person})
+	})
 })
 
 
