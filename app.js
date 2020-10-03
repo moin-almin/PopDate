@@ -160,4 +160,5 @@ app.get('/match/:user',function(req,res){
 
 app.listen(port,function(){
 	console.log(`Server is online on port ${port}`);
+	console.log(`Navigate to :-  localhost:${port}`);
 })
