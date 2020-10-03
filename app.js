@@ -35,24 +35,29 @@ const User=mongoose.model('User',userSchema)
 
 	// login
 
+
+
 app.get('/login',function(req,res){
-	res.sendFile(__dirname+'/login.htm')
+	res.sendFile(__dirname+'/login.html')
 })
 
 app.post('/login',function(req,res){
-	const username=req.body.username;
+	const email=req.body.email;
 	const password=req.body.password;
 
-	User.find({username:username},function(err,user){
+	User.find({email:email},function(err,user){
 		if(err)
 			res.send(err)
 		else{
-			if(user.password===password){
+			console.log(user)
+			if(user.password==password){
 				// res.send(`Welcome ${user}`)
 				// res.redirect('/match/:user')
-				res.redirect('/match/'+username);
+				res.redirect('/match/'+user.username);
 			}
 			else
+				console.log(req.body.password)
+			console.log(user.password==req.body.password)
 				res.send('Password is incorrect')
 		}
 	})
@@ -65,11 +70,12 @@ app.get('/signup',function(req,res){
 })
 
 app.post('/signup',function(req,res){
-
+	let found=0;
 	User.find({username:req.body.username},function(err,user){
 		if(err)
 			res.send(err)
 		if(user.length>=1){
+			found+=1;
 			res.send(`Username already taken`);
 		}
 		// else{
@@ -82,6 +88,7 @@ app.post('/signup',function(req,res){
 		if(err)
 			res.send(err)
 		if(user.length>=1){
+			found+=1;
 			res.send(`Email already registered`);
 		}
 		// else{
@@ -89,7 +96,7 @@ app.post('/signup',function(req,res){
 		// }
 
 	})
-
+	if(found==0){
 	const user=new User({
 		username:req.body.username,
 		email:req.body.email,
@@ -110,6 +117,8 @@ app.post('/signup',function(req,res){
 	// console.log('now logging the user again')
 	// console.log(user)
 	user.save();
+	res.redirect('/login')
+	}
 })
 
 	// Root route
@@ -124,26 +133,28 @@ app.get('/match/:user',function(req,res){
 	// console.log(req.params);
 	// res.send('hello '+req.params.user)
 
-	let user;
-	let match=[];
+	let person=req.params.user;
+	
+	let match=['Anushka'];
 	let result=[];
-	User.find({username:user},function(err,user){
-		console.log(user.genre);
-		// List of all the genre prefered by the user
+	// User.find({username:user},function(err,user){
+	// 	console.log(user.genre);
+	// 	// List of all the genre prefered by the user
 
-	})
-	if(user.gender=='Male'){
-		User.find({gender:'Female'},function(err,match){
-			console.log(match);
-			// List of all females for our user
-		})
-	}
-	else{
-		User.find({gender:'Male'},function(err,match){
-			console.log(match);
-			// List of all males for our user
-		})
-	}
+	// })
+	// if(user.gender=='Male'){
+	// 	User.find({gender:'Female'},function(err,match){
+	// 		console.log(match);
+	// 		// List of all females for our user
+	// 	})
+	// }
+	// else{
+	// 	User.find({gender:'Male'},function(err,match){
+	// 		console.log(match);
+	// 		// List of all males for our user
+	// 	})
+	// }
+	res.render("dashboard",{matches:match,user:person})
 
 })
 
