@@ -24,6 +24,7 @@ We have used the following tech stack to create our app :-
 <ul>
 <li>HTML</li>
 <li>CSS</li>
+<li>BOOTSTRAP</li>
 <li>JavaScript</li>
 <li>Node</li>
 <li>Express.js</li>
