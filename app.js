@@ -1,9 +1,11 @@
 const express=require('express')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose')
+const ejs=require('ejs')
 const app=express();
 const port=process.env.PORT||8000;
 
+app.set('view engine','ejs')
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 
@@ -86,10 +88,11 @@ app.post('/signup',function(req,res){
 	user.save();
 })
 
-app.get('/match/:user'){
+app.get('/match/:user',function(req,res){
 	console.log(req.params);
+	res.send('hello '+req.params.user)
 
-}
+})
 
 
 app.listen(port,function(){
