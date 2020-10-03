@@ -50,15 +50,14 @@ app.post('/login',function(req,res){
 			res.send(err)
 		else{
 			console.log(user)
-			if(user.password==password){
+			if(user[0].password==password){
 				// res.send(`Welcome ${user}`)
 				// res.redirect('/match/:user')
-				res.redirect('/match/'+user.username);
+				res.redirect('/match/'+user[0].username);
 			}
-			else
-				console.log(req.body.password)
-			console.log(user.password==req.body.password)
+			else{			
 				res.send('Password is incorrect')
+			}
 		}
 	})
 })
