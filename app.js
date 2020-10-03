@@ -19,10 +19,11 @@ mongoose.connect('mongodb://localhost:27017/usersDB',{useNewUrlParser:true,useUn
 
 const userSchema=new mongoose.Schema({
 	username:String,
+	email:String,
 	password:String,
 	gender:String,
 	// genre:[genreSchema]
-	genre:[{name:String}]
+	genre:[String]
 })
 
 // Model
@@ -68,25 +69,56 @@ app.post('/signup',function(req,res){
 	User.find({username:req.body.username},function(err,user){
 		if(err)
 			res.send(err)
-		if(user){
+		if(user.length>=1){
 			res.send(`Username already taken`);
 		}
-		else{
+		// else{
 
+		// }
+
+	})
+
+	User.find({email:req.body.email},function(err,user){
+		if(err)
+			res.send(err)
+		if(user.length>=1){
+			res.send(`Email already registered`);
 		}
+		// else{
+
+		// }
 
 	})
 
 	const user=new User({
 		username:req.body.username,
+		email:req.body.email,
 		password:req.body.password,
-		gender:req.body.gender
-
-		// genre.push(req.body.genre)
+		gender:req.body.gender,
+		genre:[]
 	})
-	user.genre.push(req.body.genre)
+	// user.genre.push(req.body.genre)
+	// user.genre=req.body.genre;
+	// console.log(user)
+	// console.log('now the req object')
+	// console.log(req.body);
+	// console.log(req.body.genre);
+
+	for(let i=0;i<req.body.genre.length;i++){
+		user.genre[i]=req.body.genre[i];
+	}
+	// console.log('now logging the user again')
+	// console.log(user)
 	user.save();
 })
+
+	// Root route
+
+app.get('/',function(req,res){
+	res.sendFile(__dirname+"/index.html")
+})
+	
+	// Dynamic Route for user
 
 app.get('/match/:user',function(req,res){
 	// console.log(req.params);
