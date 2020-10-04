@@ -2,6 +2,7 @@ const express=require('express')
 const bodyParser=require('body-parser')
 const mongoose=require('mongoose')
 const ejs=require('ejs')
+const _ = require("underscore");
 const app=express();
 const port=process.env.PORT||8000;
 
@@ -137,7 +138,7 @@ app.get('/match/:user',function(req,res){
 	let match;
 	let result=[];
 	User.find({username:person},function(err,user){
-		
+		const genreRequired = user[0].genre;
 		// List of all the genre prefered by the user
 
 	
@@ -147,7 +148,29 @@ app.get('/match/:user',function(req,res){
 			// List of all females for our user
 			// result.push(match)
 			// console.log(result)
-			result=match[0];
+			if(err){
+				console.log(err)
+			}else{
+				match.forEach( function(femaleContender){
+					console.log("started debugging");
+					const commonElementArray = _.intersection(femaleContender.genre,genreRequired);
+					console.log(commonElementArray);
+					if(commonElementArray != null){
+						const common = {
+						  username: femaleContender.username,
+						  email: femaleContender.email,
+						  commonGenure: commonElementArray, 
+						  number: commonElementArray.length
+						};
+						
+						result.push(common);
+						
+					} 
+				})
+
+			}
+			// result=match[0];
+			console.log(result)
 			res.render("dashboard",{matches:result,user:person})
 		})
 	}
@@ -155,7 +178,25 @@ app.get('/match/:user',function(req,res){
 		User.find({gender:'Male'},function(err,match){
 			// console.log(match);
 			// List of all males for our user
-			result=match[0];
+			if(err){
+				console.log(err)
+			}else{
+				match.forEach( function(maleContender){
+					const commonElementArray = _.intersection(maleContender.genre,genreRequired);
+					if(commonElementArray != null){
+						const common = {
+						  username: maleContender.username,
+						  email: maleContender.email,
+						  commonGenure: commonElementArray, 
+						  number: commonElementArray.length
+						};
+						result.push(common)
+					} 
+				})
+
+			}
+			// result=match[0];
+			console.log(result)
 			res.render("dashboard",{matches:result,user:person})
 			
 			
