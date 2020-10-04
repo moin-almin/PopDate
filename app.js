@@ -143,7 +143,7 @@ app.get('/match/:user',function(req,res){
 	
 	if(user[0].gender=='Male'){
 		User.find({gender:'Female'},function(err,match){
-			console.log(match);
+			// console.log(match);
 			// List of all females for our user
 			// result.push(match)
 			// console.log(result)
@@ -153,7 +153,7 @@ app.get('/match/:user',function(req,res){
 	}
 	else{
 		User.find({gender:'Male'},function(err,match){
-			console.log(match);
+			// console.log(match);
 			// List of all males for our user
 			result=match[0];
 			res.render("dashboard",{matches:result,user:person})
@@ -161,7 +161,6 @@ app.get('/match/:user',function(req,res){
 			
 		})
 	}
-	// res.render("dashboard",{matches:result,user:person})
 	})
 })
 
